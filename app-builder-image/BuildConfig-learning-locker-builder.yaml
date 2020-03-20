@@ -1,0 +1,25 @@
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  labels:
+    build: learning-locker-builder
+  name: learning-locker-builder
+spec:
+  source:
+    type: Git
+    git:
+      ref: master
+      uri: https://github.com/mghlcs/openshift-learning-locker
+    contextDir: app-builder-image/
+  strategy:
+    type: Docker
+    dockerStrategy:
+      pullSecret: 
+  output:
+    to:
+      kind: ImageStreanmTag
+      name: learning-locker-builder:latest
+  triggers:
+  - type: ConfigChange
+  - imageChange:
+      type: ImageChange
