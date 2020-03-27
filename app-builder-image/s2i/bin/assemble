@@ -24,5 +24,4 @@ cp -Rf /tmp/src/. ./
 
 echo "---> Building application from source..."
 npm install -g yarn
-yarn install && yarn build-all
-
+yarn install --ignore-engines && yarn build-all
