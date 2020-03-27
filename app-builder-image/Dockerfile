@@ -6,6 +6,8 @@ LABEL maintainer="Michael Steigman <msteigman@mgh.harvard.edu>"
 LABEL io.openshift.s2i.scripts-url="image:///opt/app-root/s2i/bin"
 LABEL io.s2i.scripts-url="image:///opt/app-root/s2i/bin"
 
+USER root
+
 # The reason we're here.... Need these tools
 RUN yum update \
     && yum install -y curl wget unzip procps-ng gettext \
