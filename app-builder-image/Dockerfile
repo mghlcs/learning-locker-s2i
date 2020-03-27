@@ -1,10 +1,15 @@
-FROM nodejs-10-rhel7
+FROM nodejs:10
 
 ENV BUILDER_VERSION 0.1.0
 
 LABEL maintainer="Michael Steigman <msteigman@mgh.harvard.edu>"
 LABEL io.openshift.s2i.scripts-url="image:///opt/app-root/s2i/bin"
 LABEL io.s2i.scripts-url="image:///opt/app-root/s2i/bin"
+
+# The reason we're here.... Need these tools
+RUN yum update \
+    && yum install -y curl wget unzip procps-ng gettext \
+    && yum --setopt=group_package_types=mandatory,default,optional groupinstall "Development Tools"
 
 # Rather than overwrite the existing scripts, change the location
 COPY ./s2i/bin/ /opt/app-root/s2i/

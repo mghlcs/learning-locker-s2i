@@ -5,6 +5,10 @@ metadata:
     build: learning-locker-builder
   name: learning-locker-builder
 spec:
+  output:
+    to:
+      kind: ImageStreamTag
+      name: learning-locker-builder:latest  
   source:
     type: Git
     git:
@@ -14,11 +18,10 @@ spec:
   strategy:
     type: Docker
     dockerStrategy:
-      pullSecret: 
-  output:
-    to:
-      kind: ImageStreanmTag
-      name: learning-locker-builder:latest
+      from:
+        kind: ImageStreamTag
+        name: nodejs:10
+        namespace: openshift
   triggers:
   - type: ConfigChange
   - imageChange:
