@@ -10,7 +10,7 @@ USER root
 
 RUN yum -y --disablerepo=rhel-7-server-rpms --enablerepo=ubi-7 update \
     && yum -y --disablerepo=rhel-7-server-rpms --enablerepo=ubi-7 --enablerepo=ubi-7-server-devtools-rpms \
-       group install "Development tools" --setopt=group_package_types=mandatory,default,optional \
+       group install "Development Tools" --setopt=group_package_types=mandatory,default,optional \
     && yum -y clean all
 
 # Change script location rather than overwrite originals
