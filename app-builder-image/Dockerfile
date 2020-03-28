@@ -8,13 +8,8 @@ LABEL io.s2i.scripts-url="image:///opt/app-root/s2i/bin"
 
 USER root
 
-RUN yum -y --disablerepo=rhel-7-server-rpms --enablerepo=ubi-7 update \
-    && yum -y --disablerepo=rhel-7-server-rpms --enablerepo=ubi-7 --enablerepo=ubi-7-server-devtools-rpms \
-       groups mark install "Development Tools" \
-    && yum -y --disablerepo=rhel-7-server-rpms --enablerepo=ubi-7 --enablerepo=ubi-7-server-devtools-rpms \
-       groups mark convert "Development Tools" \
-    && yum -y --disablerepo=rhel-7-server-rpms --enablerepo=ubi-7 --enablerepo=ubi-7-server-devtools-rpms \
-       groupinstall "Development Tools" --setopt=group_package_types=mandatory,default,optional \
+RUN yum -y --disablerepo="*" --enablerepo="ubi-7" update \
+    && yum -y --enablerepo="ubi-7" --enablerepo="ubi-7-server-devtools-rpms" devtoolset-7-toolchain \
     && yum -y clean all
 
 # Change script location rather than overwrite originals
