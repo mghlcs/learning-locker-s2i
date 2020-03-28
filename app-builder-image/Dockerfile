@@ -11,7 +11,7 @@ USER root
 # The reason we're here.... Need these tools
 RUN yum update \
     && yum install -y curl wget unzip procps-ng gettext \
-    && yum --setopt=group_package_types=mandatory,default,optional groupinstall "Development Tools" \
+    && yum --setopt=group_package_types=mandatory,default,optional groupinstall -y "Development Tools" \
     && yum clean all -y
 
 # Rather than overwrite the existing scripts, change the location
