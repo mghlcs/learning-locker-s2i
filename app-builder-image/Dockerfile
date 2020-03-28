@@ -9,9 +9,7 @@ LABEL io.s2i.scripts-url="image:///opt/app-root/s2i/bin"
 USER root
 
 RUN yum -y update \
-    && yum -y --enablerepo=ubi-7-server-optional-rpms --enablerepo=ubi-7-server-extras-rpms \
-       --enablerepo=ubi-7-server-devtools-rpms \
-       install devtoolset-7 \
+    && yum -y install gcc \
     && yum -y clean all
 
 # Change script location rather than overwrite originals
