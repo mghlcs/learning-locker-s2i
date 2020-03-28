@@ -9,10 +9,10 @@ LABEL io.s2i.scripts-url="image:///opt/app-root/s2i/bin"
 USER root
 
 # The reason we're here.... Need these tools
-RUN yum update \
-    && yum install -y curl wget unzip procps-ng gettext \
-    && yum --setopt=group_package_types=mandatory,default,optional groupinstall -y "Development Tools" \
-    && yum clean all -y
+RUN yum -y update \
+    && yum -y install curl wget unzip procps-ng gettext \
+    && yum -y --setopt=group_package_types=mandatory,default,optional groupinstall "Development Tools" \
+    && yum -y clean all
 
 # Rather than overwrite the existing scripts, change the location
 COPY ./s2i/bin/ /opt/app-root/s2i/
