@@ -8,9 +8,9 @@ LABEL io.s2i.scripts-url="image:///opt/app-root/s2i/bin"
 
 USER root
 
-RUN yum -y update \
+RUN yum -y --disablerepo=rhel-7-server-rpms --enablerepo=ubi-7 update \
     && yum -y --disablerepo=rhel-7-server-rpms --enablerepo=ubi-7 --enablerepo=ubi-7-server-devtools-rpms \
-       groupinstall "Development Tools" \
+       group install "Development tools" --setopt=group_package_types=mandatory,default,optional
     && yum -y clean all
 
 # Change script location rather than overwrite originals
