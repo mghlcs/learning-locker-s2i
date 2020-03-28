@@ -12,7 +12,7 @@ RUN yum -y --disablerepo=rhel-7-server-rpms --enablerepo=ubi-7 update \
     && yum -y --disablerepo=rhel-7-server-rpms --enablerepo=ubi-7 --enablerepo=ubi-7-server-devtools-rpms \
        groups mark install "Development Tools" \
     && yum -y --disablerepo=rhel-7-server-rpms --enablerepo=ubi-7 --enablerepo=ubi-7-server-devtools-rpms \
-       groups mark convert "Development Tools"    
+       groups mark convert "Development Tools" \
     && yum -y --disablerepo=rhel-7-server-rpms --enablerepo=ubi-7 --enablerepo=ubi-7-server-devtools-rpms \
        groupinstall "Development Tools" --setopt=group_package_types=mandatory,default,optional \
     && yum -y clean all
