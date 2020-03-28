@@ -8,12 +8,13 @@ LABEL io.s2i.scripts-url="image:///opt/app-root/s2i/bin"
 
 USER root
 
-# The reason we're here.... Need these tools
 RUN yum -y update \
-    && yum -y install curl wget unzip procps-ng gettext devtoolset-7 \
+    && subscription-manager repos --enable ubi-7-server-devtools-rpms \
+        --enable ubi-7-server-extras-rpms --enable ubi-7-server-optional-rpms \
+    && yum -y install curl devtoolset-7 \
     && yum -y clean all
 
-# Rather than overwrite the existing scripts, change the location
+# Change script location rather than overwrite originals
 COPY ./s2i/bin/ /opt/app-root/s2i/
 
 USER 1001
