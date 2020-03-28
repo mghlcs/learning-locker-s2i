@@ -10,7 +10,7 @@ USER root
 
 # The reason we're here.... Need these tools
 RUN yum -y update \
-    && yum -y install curl wget unzip procps-ng gettext devtoolset-7-toolchain \
+    && yum -y install curl wget unzip procps-ng gettext devtoolset-7 \
     && yum -y clean all
 
 # Rather than overwrite the existing scripts, change the location
