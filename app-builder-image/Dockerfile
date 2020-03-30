@@ -9,7 +9,7 @@ LABEL io.s2i.scripts-url="image:///opt/app-root/s2i/bin"
 USER root
 
 RUN yum -y --disablerepo="*" --enablerepo="ubi-7" update \
-    && yum -y --enablerepo="ubi-7" --enablerepo="ubi-7-server-devtools-rpms" install devtoolset-7-toolchain \
+    && yum -y --disablerepo="*" --enablerepo="rhel-server-rhscl-7-rpms" install devtoolset-7-toolchain \
     && yum -y clean all
 
 # Change script location rather than overwrite originals
