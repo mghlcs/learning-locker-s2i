@@ -15,7 +15,7 @@ RUN source scl_source enable devtoolset-7
 
 USER 1001
 
-COPY ./s2i/bin/ /opt/app-root/s2i/
+COPY ./s2i/bin /opt/app-root/s2i/
 
 RUN ls -la /opt/app-root/ && ls -la /opt/app-root/s2i/ && ls -la /opt/app-root/s2i/bin/
 
