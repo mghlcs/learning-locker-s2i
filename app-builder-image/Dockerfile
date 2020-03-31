@@ -8,15 +8,15 @@ LABEL io.s2i.scripts-url="image:///opt/app-root/s2i/bin"
 
 USER root
 
-RUN yum -y --disablerepo="*" --enablerepo="ubi-7" update \
-    && yum -y --enablerepo="rhel-server-rhscl-7-rpms" install devtoolset-7-toolchain \
+RUN yum -y --setopt=tsflags=nodocs --enablerepo="rhel-server-rhscl-7-rpms" install devtoolset-7-toolchain \
     && yum -y clean all
-
-# Change script location rather than overwrite originals
-COPY ./s2i/bin/ /opt/app-root/s2i/
 
 USER 1001
 
+COPY ./s2i/bin/ /opt/app-root/s2i/
+
+RUN source scl_source enable devtoolset-7
+
 EXPOSE 8080
 
-CMD ["/usr/libexec/s2i/usage"]
+CMD ["/opt/app-root/s2i/bin/usage"]
