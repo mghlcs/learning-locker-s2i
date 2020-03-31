@@ -11,11 +11,13 @@ USER root
 RUN yum -y --setopt=tsflags=nodocs --enablerepo="rhel-server-rhscl-7-rpms" install devtoolset-7-toolchain \
     && yum -y clean all
 
+RUN source scl_source enable devtoolset-7
+
 USER 1001
 
 COPY ./s2i/bin/ /opt/app-root/s2i/
 
-RUN source scl_source enable devtoolset-7
+RUN ls -la /opt/app-root/ && ls -la /opt/app-root/s2i/ && ls -la /opt/app-root/s2i/bin/
 
 EXPOSE 8080
 
