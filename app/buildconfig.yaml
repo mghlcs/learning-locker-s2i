@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: BuildConfig
+metadata:
+  labels:
+    build: learning-locker
+  name: learning-locker
+spec:
+  nodeSelector: null
+  output:
+    to:
+      kind: ImageStreamTag
+      name: learning-locker:latest
+  runPolicy: Serial
+  source:
+    git:
+      ref: master
+      uri: https://github.com/LearningLocker/learninglocker.git
+    type: Git
+  strategy:
+    sourceStrategy:
+      from:
+        kind: ImageStreamTag
+        name: nodejs:8
+        namespace: openshift
+      scripts: https://raw.githubusercontent.com/mghlcs/openshift-learning-locker/master/app/s2i
+    type: Source
+  triggers:
+  - type: ConfigChange

@@ -1,0 +1,25 @@
+#!/bin/bash
+
+set -e
+
+if [ -e "/opt/app-root/etc/generate_container_user" ]; then
+  source /opt/app-root/etc/generate_container_user
+fi
+
+#Set the debug port to 5858 by default.
+if [ -z "$DEBUG_PORT" ]; then
+  export DEBUG_PORT=5858
+fi
+
+# Set the environment to development by default.
+if [ -z "$DEV_MODE" ]; then
+  export DEV_MODE=false
+fi
+
+# Allow users to inspect/debug the builder image itself, by using:
+# $ docker run -i -t openshift/centos-nodejs-builder --debug
+#
+[ "$1" == "--debug" ] && exec /bin/bash
+
+
+exec "$@"

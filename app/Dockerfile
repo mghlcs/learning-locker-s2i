@@ -1,3 +1,6 @@
+# This was an attempt to create a "builder" file with build tools inside
+# - current unused
+
 FROM nodejs:10
 
 ENV BUILDER_VERSION 0.1.0
@@ -16,8 +19,6 @@ RUN source scl_source enable devtoolset-7
 USER 1001
 
 COPY s2i/bin /opt/app-root/s2i/bin/
-
-RUN ls -la /opt/app-root/ && ls -la /opt/app-root/s2i/ && ls -la /opt/app-root/s2i/bin/
 
 EXPOSE 8080
 
