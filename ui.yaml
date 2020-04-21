@@ -77,16 +77,16 @@ spec:
         terminationMessagePolicy: File
         volumeMounts:
         - mountPath: /opt/app-root/src/learninglocker/storage 
-          name: storage
+          name: app-storage
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
       terminationGracePeriodSeconds: 30
       volumes:
-      - name: storage
+      - name: app-storage
         persistentVolumeClaim:
-          claimName: storage
+          claimName: app-storage
   test: false
   triggers:
   - imageChangeParams:

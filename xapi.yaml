@@ -3,6 +3,7 @@ kind: DeploymentConfig
 metadata:
   labels:
     app: lrs
+    component: xapi
   name: xapi
 spec:
   replicas: 1
@@ -24,6 +25,7 @@ spec:
       creationTimestamp: null
       labels:
         app: lrs
+        component: xapi        
         deploymentconfig: xapi
     spec:
       containers:
@@ -39,11 +41,18 @@ spec:
         resources: {}
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /usr/src/app/storage
+          name: xapi-storage              
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
       securityContext: {}
       terminationGracePeriodSeconds: 30
+      volumes:
+      - name: xapi-storage
+        persistentVolumeClaim:
+          claimName: xapi-storage      
   test: false
   triggers:
   - type: ConfigChange

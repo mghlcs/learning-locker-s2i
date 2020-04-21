@@ -26,3 +26,11 @@ spec:
     type: Source
   triggers:
   - type: ConfigChange
+---
+apiVersion: v1
+kind: ImageStream
+metadata:
+  name: learning-locker
+spec:
+  lookupPolicy:
+    local: false

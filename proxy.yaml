@@ -73,8 +73,6 @@ spec:
       - configMap:
           name: proxy-config
         name: proxy-config
-      imagePullSecrets:
-      - name: 4988366-learn-registry-account-pull-secret
   test: false
   triggers:
   - imageChangeParams:
@@ -86,24 +84,6 @@ spec:
         name: nginx-116-rhel7:latest
     type: ImageChange
   - type: ConfigChange
----
-apiVersion: v1
-kind: ImageStream
-metadata:
-  name: nginx-116-rhel7
-spec:
-  lookupPolicy:
-    local: false
-  tags:
-  - annotations: null
-    from:
-      kind: DockerImage
-      name: registry.redhat.io/rhscl/nginx-116-rhel7
-    importPolicy:
-      scheduled: true
-    name: latest
-    referencePolicy:
-      type: Source
 ---
 apiVersion: v1
 kind: Service
