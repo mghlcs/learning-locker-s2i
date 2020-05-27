@@ -42,12 +42,11 @@ repo, necessary to build and run the app.
 
 ## Bootstrapping the Project
 
-Create OpenShift resources corresponding to these objects:
+Create OpenShift resources from the root directory.
 
-1) Create the build resources in app/ directory required to build the
-Learning Locker Node app image:
+1) Create the build resources required to build the Learning Locker Node app image:
 
-`oc create -f build.yaml`
+`oc create -f app/build.yaml`
     
     
 1) Kick off a build of learning-locker:
@@ -55,18 +54,17 @@ Learning Locker Node app image:
 `oc start-build learning-locker`
     
     
-1) Create the proxy config map resources inside proxy/config
-subdirectory:
+1) Create the proxy config map resources:
 
-`oc create configmap proxy-config --from-file=./`
+`oc create configmap proxy-config --from-file=./proxy/config/`
     
 
 (or to replace the config):
 
-`oc create configmap proxy-config --dry-run --from-file=./ | oc replace -f -`
+`oc create configmap proxy-config --dry-run --from-file=./proxy/config/ | oc replace -f -`
     
 1) Create the Storage, UI, API, xAPI, MongoDB and Proxy (Nginx)
-resources from the main directory:
+resources:
 
 `oc create -f *.yaml`
     
