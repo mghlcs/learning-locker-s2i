@@ -16,6 +16,16 @@ if [ -z "$DEV_MODE" ]; then
   export DEV_MODE=false
 fi
 
+# If NODE_ENV is not set by the user, then NODE_ENV is determined by whether
+# the container is run in development mode.
+if [ -z "$NODE_ENV" ]; then
+  if [ "$DEV_MODE" == true ]; then
+    export NODE_ENV=development
+  else
+    export NODE_ENV=production
+  fi
+fi
+
 # Allow users to inspect/debug the builder image itself, by using:
 # $ docker run -i -t openshift/centos-nodejs-builder --debug
 #

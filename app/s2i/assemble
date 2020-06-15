@@ -34,8 +34,7 @@ cp -Rf /tmp/src/. ./
 
 echo "---> Building application from source..."
 npm install -g yarn
-npm_config_build_from_source=true yarn add @babel/node --ignore-engines
-npm_config_build_from_source=true yarn install --ignore-engines && yarn build-all
+npm_config_build_from_source=true yarn install --production=false --ignore-engines && yarn build-all
 
 echo "---> Done building application, fixing permissions then done."
 
