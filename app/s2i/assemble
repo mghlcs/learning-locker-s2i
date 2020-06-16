@@ -12,16 +12,6 @@ if [[ "$1" == "-h" ]]; then
 	exec /usr/libexec/s2i/usage
 fi
 
-# If NODE_ENV is not set by the user, then NODE_ENV is determined by whether
-# the container is run in development mode.
-if [ -z "$NODE_ENV" ]; then
-  if [ "$DEV_MODE" == true ]; then
-    export NODE_ENV=development
-  else
-    export NODE_ENV=production
-  fi
-fi
-
 # Restore artifacts from the previous build (if they exist).
 #
 if [ "$(ls /tmp/artifacts/ 2>/dev/null)" ]; then
