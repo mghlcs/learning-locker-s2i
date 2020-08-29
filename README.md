@@ -62,11 +62,11 @@ them to `.yaml` files with the correct values for your environment.
 
 Log in to your cluster with the `oc` client, create your project and from the root directory:
 
-1) Create the configuration for the app and mongodb:
+1. Create the configuration for the app and mongodb:
 
 `oc create -f config/maps/*.yaml`
 
-1) Create the Nginx configuration:
+1. Create the Nginx configuration:
 
 `oc create configmap proxy-config --from-file=./config/proxy/`
 
@@ -74,12 +74,12 @@ Log in to your cluster with the `oc` client, create your project and from the ro
 
 `oc create configmap proxy-config --dry-run --from-file=./config/proxy | oc replace -f -`
 
-1) Create all of the resources (deployments, services, routes,
+1. Create all of the resources (deployments, services, routes,
 storage, image streams):
 
 `oc create -f resources/*.yaml`
         
-1) Kick off a build of learning-locker image:
+1. Kick off a build of learning-locker image:
 
 `oc start-build learning-locker`
 
