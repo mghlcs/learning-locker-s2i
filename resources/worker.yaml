@@ -1,0 +1,72 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  labels:
+    app: lrs
+    component: worker
+  name: worker
+spec:
+  replicas: 1
+  selector:
+    deploymentconfig: worker
+  strategy:
+    type: Rolling
+  template:
+    metadata:
+      labels:
+        app: lrs
+        component: worker
+        deploymentconfig: worker
+    spec:
+      containers:
+      - env:
+        - name: NPM_RUN
+          value: "start-worker-server"          
+        - name: NODE_ENV
+          value: "production"
+        - name: UI_PORT
+          value: "3000"
+        - name: API_PORT
+          value: "8080"
+        - name: MONGODB_PATH
+          value: "mongodb://mongo:mongopass@mongodb.learning-locker-dev.svc.cluster.local:27017/mongo"
+        - name: SMTP_HOST
+          value: "smtp.mailtrap.io"
+        - name: SMTP_PORT
+          value: "2525"
+        - name: SMTP_SECURED
+          value: "true"
+        - name: SMTP_USER
+          value: "dc8368f54c05fa"
+        - name: SMTP_PASS
+          value: "07d4bf8a26ebd5"
+        - name: QUEUE_PROVIDER
+          value: "REDIS"
+        - name: FS_REPO
+          value: "local"
+        - name: REDIS_HOST
+          value: "redis.learning-locker-dev.svc.cluster.local"
+        - name: REDIS_DB
+          value: "0"            
+        - name: APP_SECRET
+          value: "oximaw873ynrxc98w74ynxqo8we47mqv0984emq90348um203948mc20r9384u0mr9834mr"
+        image: learning-locker:latest          
+        imagePullPolicy: Always
+        name: worker
+        volumeMounts:
+        - mountPath: /opt/app-root/src/learninglocker/storage 
+          name: storage
+      volumes:
+      - name: storage
+        persistentVolumeClaim:
+          claimName: storage
+  triggers:
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - worker
+      from:
+        kind: ImageStreamTag
+        name: learning-locker:latest
+    type: ImageChange
+  - type: ConfigChange

@@ -13,16 +13,16 @@ spec:
   runPolicy: Serial
   source:
     git:
-      ref: master
       uri: https://github.com/LearningLocker/learninglocker.git
+      ref: v2.8.2        
     type: Git
   strategy:
     sourceStrategy:
       from:
         kind: ImageStreamTag
-        name: nodejs:8
+        name: nodejs:10
         namespace: openshift
-      scripts: https://raw.githubusercontent.com/mghlcs/openshift-learning-locker/master/app/s2i
+      scripts: https://raw.githubusercontent.com/mghlcs/openshift-learning-locker/master/s2i
     type: Source
   triggers:
   - type: ConfigChange

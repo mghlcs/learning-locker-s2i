@@ -1,4 +1,23 @@
 apiVersion: v1
+kind: ImageStream
+metadata:
+  name: xapi
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+  - annotations: null
+    from:
+      kind: DockerImage
+      name: learninglocker/xapi-service:latest
+    generation: 1
+    importPolicy:
+      scheduled: true
+    name: latest
+    referencePolicy:
+      type: Source
+---
+apiVersion: v1
 kind: DeploymentConfig
 metadata:
   labels:
@@ -11,18 +30,9 @@ spec:
     app: lrs
     deploymentconfig: xapi
   strategy:
-    activeDeadlineSeconds: 21600
-    resources: {}
-    rollingParams:
-      intervalSeconds: 1
-      maxSurge: 25%
-      maxUnavailable: 25%
-      timeoutSeconds: 600
-      updatePeriodSeconds: 1
     type: Rolling
   template:
     metadata:
-      creationTimestamp: null
       labels:
         app: lrs
         component: xapi        
@@ -31,29 +41,22 @@ spec:
       containers:
       - env:
         - name: MONGO_URL
-          value: mongodb://admin:secret@192.168.221.50:27017/mongo
-        image: learninglocker/xapi-service@sha256:a24958e6704104d79a89cce04cd9b864f02a955aaa9d6416ef4b44513c005ec5
-        imagePullPolicy: Always
+          value: "mongodb://mongo:mongopass@mongodb.learning-locker-dev.svc.cluster.local:27017/mongo"
+        - name: STORAGE_REPO
+          value: "local"
+        - name: REDIS_HOST
+          value: "redis.learning-locker-dev.svc.cluster.local/0"
         name: xapi
         ports:
         - containerPort: 8081
           protocol: TCP
-        resources: {}
-        terminationMessagePath: /dev/termination-log
-        terminationMessagePolicy: File
         volumeMounts:
         - mountPath: /usr/src/app/storage
           name: xapi-storage              
-      dnsPolicy: ClusterFirst
-      restartPolicy: Always
-      schedulerName: default-scheduler
-      securityContext: {}
-      terminationGracePeriodSeconds: 30
       volumes:
       - name: xapi-storage
         persistentVolumeClaim:
           claimName: xapi-storage      
-  test: false
   triggers:
   - type: ConfigChange
   - imageChangeParams:
@@ -62,7 +65,7 @@ spec:
       - xapi
       from:
         kind: ImageStreamTag
-        name: learninglocker/xapi-service:latest
+        name: xapi:latest
     type: ImageChange
 ---
 apiVersion: v1
@@ -79,7 +82,3 @@ spec:
     targetPort: 8081
   selector:
     deploymentconfig: xapi
-  sessionAffinity: None
-  type: ClusterIP
-status:
-  loadBalancer: {}

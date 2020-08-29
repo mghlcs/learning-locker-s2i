@@ -10,6 +10,8 @@ Locker](http://docs.learninglocker.net/guides-custom-installation/) as
 well as the `.env` and `nginx.conf.example` files in the Learning
 Locker repo.
 
+OpenShift is Kubernetes. On Amazon, Azure, etc.
+
 ## Components
 
 Learning Locker is composed of several microservices - there is a UI
@@ -26,11 +28,22 @@ It may be helpful to check out the [architectural
 overview](http://docs.learninglocker.net/overview-architecture/) on
 Learning Locker's site to get a deeper understanding of the application.
 
+## Prerequisites
+
+The resources as currently set up, rely on the following images
+being available in your cluster's `openshift` namespace:
+
+* nodejs:10 (builder image for the app itself)
+* nginx:1.16
+* mongodb:3.6
+* redis:5
+
 ## Storage
 
 There are three PVCs included. `app-storage` is used by the UI, API and
 workers. `xapi-storage` is used by the xAPI service. `mongo-storage`
-is used to persist MongoDB's data.
+is used to persist MongoDB's data. You may wish to tweak the amounts
+for each PV. Guidance from HT0 is...
 
 ## The Learning Locker Build
 
@@ -42,29 +55,47 @@ repo, necessary to build and run the app.
 
 ## Bootstrapping the Project
 
-Create OpenShift resources from the root directory.
+Log in to your cluster with the `oc` client, create your project and from the root directory:
 
-1) Create the build resources required to build the Learning Locker Node app image:
+1) Create the Nginx configuration:
 
-`oc create -f app/build.yaml`
-    
-    
-1) Kick off a build of learning-locker:
-
-`oc start-build learning-locker`
-    
-    
-1) Create the proxy config map resources:
-
-`oc create configmap proxy-config --from-file=./proxy/config/`
-    
+`oc create configmap proxy-config --from-file=./config/proxy/`
 
 (or to replace the config):
 
-`oc create configmap proxy-config --dry-run --from-file=./proxy/config/ | oc replace -f -`
-    
-1) Create the Storage, UI, API, xAPI, MongoDB and Proxy (Nginx)
-resources:
+`oc create configmap proxy-config --dry-run --from-file=./config/proxy | oc replace -f -`
 
-`oc create -f *.yaml`
-    
+1) Create all of the resources (deployments, services, routes,
+storage, image streams):
+
+`oc create -f resources/*.yaml`
+        
+1) Kick off a build of learning-locker image:
+
+`oc start-build learning-locker`
+
+The build will take several minutes. Once build finishes, it will be
+rolled out for the API, UI and worker services.
+
+Get a console on any of API, UI or worker pods and run
+
+`yarn migrate`
+
+to set up the MongoDB schema and indexes.
+
+
+### Certificates
+
+You'll want to instal your certs for the proxy as well.
+
+Drop your key and certs into a directory and create the secret.
+
+`oc create secret generic proxy-ssl --from-file=./config/proxy-ssl/ `
+
+or to update:
+
+`oc create secret generic proxy-ssl --from-file=./config/proxy-ssl/ -o yaml --dry-run | oc replace -f -`
+
+## Updates
+
+Coming soon...
