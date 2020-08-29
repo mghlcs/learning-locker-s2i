@@ -52,7 +52,7 @@ TODO: Ask for some guidance from community on default sizes for these PVCs.
 The resources in the app/ subdirectory are used to build the Learning
 Locker image used by several of the deployments. The build is an s2i
 build, using the Node builder image from RedHat. The only
-customization is the injection of the [s2i scripts](app/s2i) from this
+customization is the injection of the [s2i scripts](s2i) from this
 repo, necessary to build and run the app.
 
 ## Bootstrapping the Project
@@ -66,7 +66,7 @@ Log in to your cluster with the `oc` client, create your project and from the ro
 
 `oc create -f config/maps/*.yaml`
 
-1. Create the Nginx configuration:
+2. Create the Nginx configuration:
 
 `oc create configmap proxy-config --from-file=./config/proxy/`
 
@@ -74,19 +74,19 @@ Log in to your cluster with the `oc` client, create your project and from the ro
 
 `oc create configmap proxy-config --dry-run --from-file=./config/proxy | oc replace -f -`
 
-1. Create all of the resources (deployments, services, routes,
+3. Create all of the resources (deployments, services, routes,
 storage, image streams):
 
 `oc create -f resources/*.yaml`
         
-1. Kick off a build of learning-locker image:
+4. Kick off a build of learning-locker image:
 
 `oc start-build learning-locker`
 
 The build will take several minutes. Once build finishes, it will be
 rolled out for the API, UI and worker services.
 
-Get a console on any of API, UI or worker pods and run
+Get a console on any of API, UI or worker pods (e.g. `oc rsh ui...`) and run
 
 `yarn migrate`
 
