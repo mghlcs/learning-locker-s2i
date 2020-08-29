@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap  
+data:
+  smtp-host: <mailhost>
+  smtp-port: <mailhost-port>
+  smtp-secured: <true|false>
+  smtp-user: <user>
+  smtp-pass: <password>
+  app-secret: <secret>
+metadata:
+  labels:
+    application: lrs
+    component: app
+  name: app-config
