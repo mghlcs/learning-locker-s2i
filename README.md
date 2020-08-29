@@ -43,7 +43,9 @@ being available in your cluster's `openshift` namespace:
 There are three PVCs included. `app-storage` is used by the UI, API and
 workers. `xapi-storage` is used by the xAPI service. `mongo-storage`
 is used to persist MongoDB's data. You may wish to tweak the amounts
-for each PV. Guidance from HT0 is...
+for each PV. 
+
+TODO: Ask for some guidance from community on default sizes for these PVCs.
 
 ## The Learning Locker Build
 
@@ -55,7 +57,14 @@ repo, necessary to build and run the app.
 
 ## Bootstrapping the Project
 
+Visit the example config maps in the config/maps directory and convert
+them to `.yaml` files with the correct values for your environment.
+
 Log in to your cluster with the `oc` client, create your project and from the root directory:
+
+1) Create the configuration for the app and mongodb:
+
+`oc create -f config/maps/*.yaml`
 
 1) Create the Nginx configuration:
 
