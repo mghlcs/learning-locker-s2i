@@ -49,11 +49,12 @@ TODO: Ask for some guidance from community on default sizes for these PVCs.
 
 ## The Learning Locker Build
 
-The resources in the app/ subdirectory are used to build the Learning
-Locker image used by several of the deployments. The build is an s2i
-build, using the Node builder image from RedHat. The only
-customization is the injection of the [s2i scripts](s2i) from this
-repo, necessary to build and run the app.
+The image containing the application code for the UI, API and workers
+is built using Redhat's S2I technology and is specified in the [build.yaml
+file](resources/buiild.yaml). The build is a standard s2i build, using
+the Node builder image from RedHat. The only customization is the
+injection of the [s2i scripts](s2i) from this repo, necessary to build
+and run the app.
 
 ## Bootstrapping the Project
 
