@@ -68,11 +68,11 @@ Log in to your cluster with the `oc` client, create your project and from the ro
 
 2. Create the Nginx configuration:
 
-`oc create configmap proxy-config --from-file=./config/proxy/`
+`oc create configmap proxy-config --from-file=./config/from-file/proxy/`
 
 (or to replace the config):
 
-`oc create configmap proxy-config --dry-run --from-file=./config/proxy | oc replace -f -`
+`oc create configmap proxy-config --dry-run --from-file=./config/from-file/proxy | oc replace -f -`
 
 3. Create all of the resources (deployments, services, routes,
 storage, image streams):
@@ -99,11 +99,11 @@ You'll want to instal your certs for the proxy as well.
 
 Drop your key and certs into a directory and create the secret.
 
-`oc create secret generic proxy-ssl --from-file=./config/proxy-ssl/ `
+`oc create secret generic proxy-ssl --from-file=<your-ssl-directory>/ `
 
 or to update:
 
-`oc create secret generic proxy-ssl --from-file=./config/proxy-ssl/ -o yaml --dry-run | oc replace -f -`
+`oc create secret generic proxy-ssl --from-file=<your-ssl-directory> -o yaml --dry-run | oc replace -f -`
 
 ## Updates
 
