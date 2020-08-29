@@ -21,13 +21,25 @@ spec:
       containers:
       - env:
         - name: MONGODB_ADMIN_PASSWORD
-          value: super-secret
+          valueFrom:
+            configMapKeyRef:
+              key: mongodb-admin-password
+              name: mongodb-config
         - name: MONGODB_DATABASE
-          value: mongo
-        - name: MONGODB_PASSWORD
-          value: mongopass
+          valueFrom:
+            configMapKeyRef:
+              key: mongodb-database
+              name: mongodb-config
         - name: MONGODB_USER
-          value: mongo
+          valueFrom:
+            configMapKeyRef:
+              key: mongodb-user
+              name: mongodb-config                
+        - name: MONGODB_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              key: mongodb-password
+              name: mongodb-config
         imagePullPolicy: Always
         name: mongodb
         ports:
@@ -48,7 +60,7 @@ spec:
       - mongodb
       from:
         kind: ImageStreamTag
-        name: mongodb:3.4
+        name: mongodb:3.6
         namespace: openshift
     type: ImageChange
 ---

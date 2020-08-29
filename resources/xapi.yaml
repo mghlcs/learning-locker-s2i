@@ -41,7 +41,10 @@ spec:
       containers:
       - env:
         - name: MONGO_URL
-          value: "mongodb://mongo:mongopass@mongodb.learning-locker-dev.svc.cluster.local:27017/mongo"
+          valueFrom:
+            configMapKeyRef:
+              key: mongodb-path
+              name: app-config
         - name: STORAGE_REPO
           value: "local"
         - name: REDIS_HOST
