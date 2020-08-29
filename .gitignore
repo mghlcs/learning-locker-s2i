@@ -1,1 +1,5 @@
 config/maps/*.yaml
+*.pem
+*.key
+*.crt
+*.csr
