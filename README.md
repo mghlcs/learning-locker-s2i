@@ -51,7 +51,7 @@ TODO: Ask for some guidance from community on default sizes for these PVCs.
 
 The image containing the application code for the UI, API and workers
 is built using Redhat's S2I technology and is specified in the [build.yaml
-file](resources/buiild.yaml). The build is a standard s2i build, using
+file](resources/build.yaml). The build is a standard s2i build, using
 the Node builder image from RedHat. The only customization is the
 injection of the [s2i scripts](s2i) from this repo, necessary to build
 and run the app.
