@@ -72,7 +72,7 @@ Log in to your cluster with the `oc` client, create your project and from the ro
 
 (or to replace the config):
 
-`oc create configmap proxy-config --dry-run --from-file=./config/from-file/proxy | oc replace -f -`
+`oc create configmap proxy-config --dry-run --from-file=./config/from-file/proxy/ | oc replace -f -`
 
 3. Create all of the resources (deployments, services, routes,
 storage, image streams):
@@ -103,7 +103,7 @@ Drop your key and certs into a directory and create the secret.
 
 or to update:
 
-`oc create secret generic proxy-ssl --from-file=<your-ssl-directory> -o yaml --dry-run | oc replace -f -`
+`oc create secret generic proxy-ssl --from-file=<your-ssl-directory>/ -o yaml --dry-run | oc replace -f -`
 
 ## Updates
 
