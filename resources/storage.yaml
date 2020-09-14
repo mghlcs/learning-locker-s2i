@@ -34,6 +34,17 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  name: mongodb-backup-storage
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 2Gi        
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
   name: redis-storage
 spec:
   accessModes:

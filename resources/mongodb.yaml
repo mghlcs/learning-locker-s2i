@@ -48,10 +48,15 @@ spec:
         volumeMounts:
         - mountPath: /var/lib/mongodb/data
           name: mongodb
+        - mountPath: /var/lib/mongodb/backup
+          name: mongodb-backup
       volumes:
         - name: mongodb
           persistentVolumeClaim:
             claimName: mongodb-storage
+        - name: mongodb-backup
+          persistentVolumeClaim:
+            claimName: mongodb-backup-storage
   triggers:
   - type: ConfigChange
   - imageChangeParams:
@@ -78,3 +83,47 @@ spec:
     targetPort: 27017
   selector:
     deploymentconfig: mongodb
+---
+apiVersion: batch/v2alpha1
+kind: CronJob
+metadata:
+  name: mongodb-backup
+spec:
+  schedule: "0 23 * * *"  
+  concurrencyPolicy: "Forbid"
+  startingDeadlineSeconds: 200 
+  suspend: true            
+  successfulJobsHistoryLimit: 3 
+  failedJobsHistoryLimit: 1     
+  jobTemplate:             
+    spec:
+      template:
+        metadata:
+          labels:
+            app: lrs
+            component: mongodb-backup
+        spec:
+          restartPolicy: "Never"          
+          containers:
+          - env:
+            - name: MONGODB_PATH
+              valueFrom:
+                configMapKeyRef:
+                  key: mongodb-path
+                  name: mongodb-config
+            - name: MONGODB_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  key: mongodb-database
+                  name: mongodb-config
+            name: mongodb-backup
+            image: mongodb:3.6
+            command: ["mongodump",  "--uri ${MONGODB_PATH}", "--gzip", "--archive /var/lib/mongodb/backup/${MONGO_DATABASE}.$(date +%Y%m%dT%H%M%S).archive"]
+            volumeMounts:
+            - mountPath: /var/lib/mongodb/backup
+              name: mongodb-backup
+          volumes:
+            - name: mongodb-backup
+              persistentVolumeClaim:
+                claimName: mongodb-backup-storage
+
