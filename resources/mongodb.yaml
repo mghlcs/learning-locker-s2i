@@ -8,14 +8,16 @@ metadata:
 spec:
   replicas: 1
   selector:
-    app: mongodb
+    app: lrs
+    component: mongodb
     deploymentconfig: mongodb
   strategy:
     type: Rolling
   template:
     metadata:
       labels:
-        app: mongodb
+        app: lrs
+        component: mongodb          
         deploymentconfig: mongodb
     spec:
       containers:
