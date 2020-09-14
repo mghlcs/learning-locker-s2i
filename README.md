@@ -30,8 +30,8 @@ Learning Locker's site to get a deeper understanding of the application.
 
 ## Prerequisites
 
-The resources as currently set up, rely on the following images
-being available in your cluster's `openshift` namespace:
+The resources as currently set up, work on OpenShift 3.7 and rely on
+the following images in your cluster's `openshift` namespace:
 
 * nodejs:10 (builder image for the app itself)
 * nginx:1.16
@@ -41,9 +41,10 @@ being available in your cluster's `openshift` namespace:
 ## Storage
 
 There are three PVCs included. `app-storage` is used by the UI, API and
-workers. `xapi-storage` is used by the xAPI service. `mongo-storage`
-is used to persist MongoDB's data. You may wish to tweak the amounts
-for each PV. 
+workers. `xapi-storage` is used by the xAPI service. `mongodb-storage`
+is used to persist MongoDB's data. `mongodb-backup-storage` is
+dedicated to archives of the DB and is also mounted in the DB pods so
+you can grab the backups there. 
 
 TODO: Ask for some guidance from community on default sizes for these PVCs.
 
@@ -61,7 +62,8 @@ and run the app.
 Visit the example config maps in the config/maps directory and convert
 them to `.yaml` files with the correct values for your environment.
 
-Log in to your cluster with the `oc` client, create your project and from the root directory:
+Log in to your cluster with the `oc` client, create your project and
+from the repo's root directory:
 
 1. Create the configuration for the app and mongodb:
 
@@ -69,11 +71,18 @@ Log in to your cluster with the `oc` client, create your project and from the ro
 
 2. Create the Nginx configuration:
 
-`oc create configmap proxy-config --from-file=./config/from-file/proxy/`
+The configuration depends on dhparam.pem coexisting in the directory
+with the config file. If you don't have one, create it:
 
-(or to replace the config):
+`openssl dhparam -out config/from-file/proxy/dhparam.pem 2048`
 
-`oc create configmap proxy-config --dry-run --from-file=./config/from-file/proxy/ | oc replace -f -`
+then, create the config map from the files:
+
+`oc create configmap proxy-config --from-file=config/from-file/proxy/`
+
+(or to replace the config after it's been created):
+
+`oc create configmap proxy-config --dry-run --from-file=config/from-file/proxy/ | oc replace -f -`
 
 3. Create all of the resources (deployments, services, routes,
 storage, image streams):
@@ -94,11 +103,12 @@ Get a console on any of API, UI or worker pods (e.g. `oc rsh ui...`) and run
 to set up the MongoDB schema and indexes.
 
 
-### Certificates
+### Certificates and Security
 
 You'll want to instal your certs for the proxy as well.
 
-Drop your key and certs into a directory and create the secret.
+Drop your key and certs into a directory with the names lrs.key and
+lrs.crt and create the secret:
 
 `oc create secret generic proxy-ssl --from-file=<your-ssl-directory>/ `
 
