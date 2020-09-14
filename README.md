@@ -38,6 +38,9 @@ the following images in your cluster's `openshift` namespace:
 * mongodb:3.6
 * redis:5
 
+The config file for Nginx depends on cluster DNS based on the project
+name `learning-locker`.
+
 ## Storage
 
 There are three PVCs included. `app-storage` is used by the UI, API and
