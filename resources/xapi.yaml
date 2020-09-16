@@ -44,11 +44,11 @@ spec:
           valueFrom:
             configMapKeyRef:
               key: mongodb-path
-              name: app-config
+              name: mongodb-config
         - name: STORAGE_REPO
           value: "local"
         - name: REDIS_HOST
-          value: "redis.learning-locker-dev.svc.cluster.local/0"
+          value: "redis.learning-locker.svc.cluster.local/0"
         name: xapi
         ports:
         - containerPort: 8081
