@@ -1,5 +1,5 @@
 config/maps/*.yaml
-config/route*.yaml
+config/routes/*.yaml
 *.pem
 *.key
 *.crt

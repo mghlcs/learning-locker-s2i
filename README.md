@@ -99,14 +99,14 @@ lrs.crt and create the secret:
 3. Create the route:
 
 This resource will enable users to reach the app. Visit the
-example route at `config/route.yaml.example` and add your LRS
+example route at `config/routes/route.yaml.example` and add your LRS
 hostname. Save the file with a `.yaml` extension. The .gitignore file
-for this repo is set to ignore config/proxy*.yaml. You may wish to add
+for this repo is set to ignore config/routes/*.yaml. You may wish to add
 routes for all of your environments in this directory using a naming
-structure such as `config/route-dev.yaml`, `config/route-stage.yaml`,
+structure such as `config/routes/dev.yaml`, `config/routes/stage.yaml`,
 etc. Finally, create the route:
 
-`oc create -f config/route-<env>.yaml`
+`oc create -f config/routes/<env>.yaml`
 
 4. Create all of the resources (deployments, services, routes,
 storage, image streams):
