@@ -38,9 +38,6 @@ the following images in your cluster's `openshift` namespace:
 * mongodb:3.6
 * redis:5
 
-The config file for Nginx depends on cluster DNS based on the project
-name `learning-locker`.
-
 ## Storage
 
 There are three PVCs included. `app-storage` is used by the UI, API and
@@ -62,17 +59,28 @@ and run the app.
 
 ## Bootstrapping the Project
 
+### Create the Project
+
+Log in to your cluster with the `oc` client and create your project:
+
+`oc new-project learning-locker --description="An OpenShift implementation of the Learning Locker LRS" --display-name="Learning Locker LRS (Stage)"`
+
+There are several configuration elements that depend on the project
+name `learning-locker`. If you need to change the project name, you
+can search for `.learning-locker.svc.cluster.local` in the repo for
+instances of the internal DNS name that would need to be updated.
+
+### Create App and MongoDB Configuration
+
 Visit the example config maps in the config/maps directory and convert
 them to `.yaml` files with the correct values for your environment.
 
-Log in to your cluster with the `oc` client, create your project and
-from the repo's root directory:
 
-1. Create App and MongoDB Configuration:
+from the repo's root directory:
 
 `oc create -f config/maps/`
 
-2. Create Nginx configuration:
+### Create Nginx configuration
 
 The configuration depends on dhparam.pem coexisting in the directory
 with the config file. If you don't have one, create it:
@@ -96,7 +104,7 @@ lrs.crt and create the secret:
 
 `oc create secret generic proxy-ssl --from-file=<your-ssl-directory>/ -o yaml --dry-run | oc replace -f -`
 
-3. Create the route:
+### Create the Route
 
 This resource will enable users to reach the app. Visit the
 example route at `config/routes/route.yaml.example` and add your LRS
@@ -108,8 +116,10 @@ etc. Finally, create the route:
 
 `oc create -f config/routes/<env>.yaml`
 
-4. Create all of the resources (deployments, services, routes,
-storage, image streams):
+### Create the Resources 
+
+Next, create Kubernetes resources (deployments, services, routes,
+storage, image streams): 
 
 `oc create -f resources/`
         
@@ -117,7 +127,7 @@ The creation of the build config will kick off an initial build. The
 build will take several minutes. Once the build finishes, it will be
 rolled out for the API, UI and worker services. 
 
-5. Rollout services
+### Rollout services
 
 Trigger a rollout for the deployments that depend on images other than
 the `learning-locker` image.
@@ -126,7 +136,7 @@ the `learning-locker` image.
 `oc rollout latest mongodb`
 `oc rollout latest xapi`
 
-6. Create the MongoDB schema and indexes:
+### Create the MongoDB schema and indexes
 
 After the app services are running, get a console on any of API, UI or
 worker pods (e.g. `oc rsh ui...`) and run:
