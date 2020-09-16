@@ -70,7 +70,7 @@ from the repo's root directory:
 
 1. Create the configuration for the app and mongodb:
 
-`oc create -f config/maps/*.yaml`
+`oc create -f config/maps/`
 
 2. Create the Nginx configuration:
 
@@ -90,7 +90,7 @@ then, create the config map from the files:
 3. Create all of the resources (deployments, services, routes,
 storage, image streams):
 
-`oc create -f resources/*.yaml`
+`oc create -f resources/`
         
 4. Kick off a build of learning-locker image:
 
