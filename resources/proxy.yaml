@@ -92,22 +92,3 @@ spec:
     targetPort: 8443
   selector:
     deploymentconfig: proxy
----
-apiVersion: v1
-kind: Route
-metadata:
-  labels:
-    app: proxy
-  name: proxy
-spec:
-  host: activities.oscp-dev.partners.org
-  port:
-    targetPort: 8443-tcp
-  tls:
-    insecureEdgeTerminationPolicy: Redirect
-    termination: edge
-  to:
-    kind: Service
-    name: proxy
-    weight: 100
-  wildcardPolicy: None
