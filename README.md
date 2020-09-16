@@ -68,11 +68,11 @@ them to `.yaml` files with the correct values for your environment.
 Log in to your cluster with the `oc` client, create your project and
 from the repo's root directory:
 
-1. Create the configuration for the app and mongodb:
+1. Create App and MongoDB Configuration:
 
 `oc create -f config/maps/`
 
-2. Create the Nginx configuration:
+2. Create Nginx configuration:
 
 The configuration depends on dhparam.pem coexisting in the directory
 with the config file. If you don't have one, create it:
@@ -87,37 +87,51 @@ then, create the config map from the files:
 
 `oc create configmap proxy-config --dry-run --from-file=config/from-file/proxy/ | oc replace -f -`
 
-3. Create all of the resources (deployments, services, routes,
-storage, image streams):
-
-`oc create -f resources/`
-        
-4. Kick off a build of learning-locker image:
-
-`oc start-build learning-locker`
-
-The build will take several minutes. Once build finishes, it will be
-rolled out for the API, UI and worker services.
-
-Get a console on any of API, UI or worker pods (e.g. `oc rsh ui...`) and run
-
-`yarn migrate`
-
-to set up the MongoDB schema and indexes.
-
-
-### Certificates and Security
-
-You'll want to instal your certs for the proxy as well.
-
-Drop your key and certs into a directory with the names lrs.key and
+Next, drop your key and certs into a directory with the names lrs.key and
 lrs.crt and create the secret:
 
 `oc create secret generic proxy-ssl --from-file=<your-ssl-directory>/ `
 
-or to update:
+(or, again, to replace after initial creation):
 
 `oc create secret generic proxy-ssl --from-file=<your-ssl-directory>/ -o yaml --dry-run | oc replace -f -`
+
+3. Create the route:
+
+This resource will enable users to reach the app. Visit the
+example route at `config/route.yaml.example` and add your LRS
+hostname. Save the file with a `.yaml` extension. The .gitignore file
+for this repo is set to ignore config/proxy*.yaml. You may wish to add
+routes for all of your environments in this directory using a naming
+structure such as `config/route-dev.yaml`, `config/route-stage.yaml`,
+etc. Finally, create the route:
+
+`oc create -f config/route-<env>.yaml`
+
+4. Create all of the resources (deployments, services, routes,
+storage, image streams):
+
+`oc create -f resources/`
+        
+The creation of the build config will kick off an initial build. The
+build will take several minutes. Once the build finishes, it will be
+rolled out for the API, UI and worker services. 
+
+5. Rollout services
+
+Trigger a rollout for the deployments that depend on images other than
+the `learning-locker` image.
+
+`oc rollout latest redis`
+`oc rollout latest mongodb`
+`oc rollout latest xapi`
+
+6. Create the MongoDB schema and indexes:
+
+After the app services are running, get a console on any of API, UI or
+worker pods (e.g. `oc rsh ui...`) and run:
+
+`yarn migrate`
 
 ## Updates
 
