@@ -63,7 +63,7 @@ and run the app.
 
 Log in to your cluster with the `oc` client and create your project:
 
-`oc new-project learning-locker --description="An OpenShift implementation of the Learning Locker LRS" --display-name="Learning Locker LRS (Stage)"`
+`oc new-project learning-locker --description="An OpenShift implementation of the Learning Locker LRS" --display-name="Learning Locker LRS"`
 
 There are several configuration elements that depend on the project
 name `learning-locker`. If you need to change the project name, you
@@ -76,14 +76,17 @@ Visit the example config maps in the config/maps directory and convert
 them to `.yaml` files with the correct values for your environment.
 
 
-from the repo's root directory:
+Then, from the repo's root directory:
 
 `oc create -f config/maps/`
 
 ### Create Nginx configuration
 
-The configuration depends on dhparam.pem coexisting in the directory
-with the config file. If you don't have one, create it:
+The configuration requires a Diffie-Hellman parameters for
+security. The file should be in the same directory as the Nginx config
+file so that is included in the config map.
+
+To create the file:
 
 `openssl dhparam -out config/from-file/proxy/dhparam.pem 2048`
 
@@ -133,7 +136,9 @@ Trigger a rollout for the deployments that depend on images other than
 the `learning-locker` image.
 
 `oc rollout latest redis`
+
 `oc rollout latest mongodb`
+
 `oc rollout latest xapi`
 
 ### Create the MongoDB schema and indexes
