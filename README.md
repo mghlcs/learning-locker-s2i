@@ -82,9 +82,9 @@ Then, from the repo's root directory:
 
 ### Create Nginx configuration
 
-The configuration requires a Diffie-Hellman parameters for
-security. The file should be in the same directory as the Nginx config
-file so that is included in the config map.
+The configuration requires a Diffie-Hellman parameters file for
+added security. The file should be in the same directory as the Nginx
+config file so that is included in the config map.
 
 To create the file:
 
