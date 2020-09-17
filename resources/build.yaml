@@ -14,7 +14,7 @@ spec:
   source:
     git:
       uri: https://github.com/LearningLocker/learninglocker.git
-      ref: v6.3.0
+      ref: v6.4.0
     type: Git
   strategy:
     sourceStrategy:
